@@ -9,4 +9,12 @@ describe.only('Test GET /cong/:a/:b', () => {
         equal(success, true);
         equal(result, 9);
     });
+
+    it('Cannot add 2 strings', async () => {
+        const response = await request(app).get('/cong/x/y');
+        const { success, result, message } = response.body;
+        equal(success, false);
+        equal(result, undefined);
+        equal(message, 'TYPE_ERROR');
+    });
 });
