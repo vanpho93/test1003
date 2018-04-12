@@ -35,7 +35,7 @@ describe('Test addCallback function', () => {
     });
 });
 
-describe.only('Test addPromise function', () => {
+describe('Test addPromise function', () => {
     it('Can add 2 numbers with callback', (done) => {
         addPromise(4, 5)
         .then(result => equal(result, 9))
