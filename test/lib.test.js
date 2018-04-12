@@ -1,9 +1,10 @@
 const { add, addCallback, addPromise } = require('../src/lib');
+const { equal } = require('assert');
 
 describe('Test add function', () => {
     it('Can add 2 numbers', () => {
         const total = add(4, 5);
-        if (total !== 9) throw new Error('Loi');
+        equal(total, 9);
     });
 
     it('Cannot add 2 strings', () => {
@@ -11,7 +12,7 @@ describe('Test add function', () => {
             const total = add('x', 'y');
             throw new Error('Loi 1');
         } catch (error) {
-            if (error.message !== 'Type error') throw new Error('Loi 2');
+            equal(error.message, 'Type error');
         }
     });
 });
@@ -19,17 +20,32 @@ describe('Test add function', () => {
 describe('Test addCallback function', () => {
     it('Can add 2 numbers with callback', (done) => {
         addCallback(4, 5, (error, result) => {
-            if (error !== null) throw new Error('Loi');
-            if (result !== 9) throw new Error('Loi');
+            equal(error, null);
+            equal(result, 9);
             done();
         });
     });
 
     it('Cannot add 2 strings with callback', (done) => {
         addCallback('x', 'y', (error, result) => {
-            if (result !== undefined) throw new Error('Loi');
-            if (error.message !== 'Type error') throw new Error('Loi');
+            equal(result, undefined);
+            equal(error.message, 'Type error');
             done();
         });
+    });
+});
+
+describe.only('Test addPromise function', () => {
+    it('Can add 2 numbers with callback', (done) => {
+        addPromise(4, 5)
+        .then(result => equal(result, 9))
+        .then(() => done());
+    });
+
+    it('Cannot add 2 strings with callback', (done) => {
+        addPromise('x', 'y')
+        .then(() => { throw new Error('Loi'); })
+        .catch(error => equal(error.message, 'Type error'))
+        .then(() => done());
     });
 });
